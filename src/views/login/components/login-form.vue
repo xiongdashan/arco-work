@@ -67,7 +67,7 @@
   import { useI18n } from 'vue-i18n';
   import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
-  import { LoginData } from '@/api/user';
+  import { LoginData } from '@/services/user';
 
   const router = useRouter();
   const { t } = useI18n();
@@ -88,7 +88,7 @@
     if (!errors) {
       setLoading(true);
       try {
-        await userStore.login(values);
+        await userStore.login('xinglu', values);
         const { redirect, ...othersQuery } = router.currentRoute.value.query;
         router.push({
           name: (redirect as string) || 'Workplace',

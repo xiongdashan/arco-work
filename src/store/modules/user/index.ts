@@ -4,8 +4,8 @@ import {
   logout as userLogout,
   getUserInfo,
   LoginData,
-} from '@/api/user';
-import { setToken, clearToken } from '@/utils/auth';
+} from '@/services/user';
+import { setToken, clearToken, setTid, setAuthor } from '@/utils/auth';
 import { removeRouteListener } from '@/utils/route-listener';
 import { UserState } from './types';
 
@@ -27,6 +27,7 @@ const useUserStore = defineStore('user', {
     accountId: undefined,
     certification: undefined,
     role: '',
+    permission: null,
   }),
 
   getters: {
@@ -55,15 +56,18 @@ const useUserStore = defineStore('user', {
     // Get user's information
     async info() {
       const res = await getUserInfo();
-
-      this.setInfo(res.data);
+      setAuthor(res.permission);
+      this.setInfo(res);
     },
 
     // Login
-    async login(loginForm: LoginData) {
+    async login(tid: string, loginForm: LoginData) {
       try {
-        const res = await userLogin(loginForm);
-        setToken(res.data.token);
+        const res = await userLogin(tid, loginForm);
+        const { data } = res;
+        setToken(data.token);
+        setTid(data.tid);
+        setAuthor(data.permission);
       } catch (err) {
         clearToken();
         throw err;

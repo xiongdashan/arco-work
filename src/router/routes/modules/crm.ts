@@ -1,20 +1,20 @@
 export default {
-  path: 'dashboard',
-  name: 'dashboard',
+  path: 'crm',
+  name: 'CRM',
   component: () => import('@/views/dashboard/index.vue'),
   meta: {
-    title: '仪表盘',
+    title: 'CRM',
     requiresAuth: true,
     icon: 'icon-dashboard',
-    order: 0,
+    order: 1,
   },
   children: [
     {
-      path: 'workplace',
-      name: 'Workplace',
+      path: 'customer/list',
+      name: 'crm.customer.title',
       component: () => import('@/views/dashboard/workplace/index.vue'),
       meta: {
-        title: '工作区',
+        title: '客户管理',
         requiresAuth: true,
         roles: ['*'],
       },

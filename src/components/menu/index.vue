@@ -1,6 +1,6 @@
 <script lang="tsx">
   import { defineComponent, ref, h, compile, computed } from 'vue';
-  import { useI18n } from 'vue-i18n';
+  // import { useI18n } from 'vue-i18n';
   import { useRouter, RouteRecordRaw, RouteRecordNormalized } from 'vue-router';
   import { useAppStore } from '@/store';
   import usePermission from '@/hooks/permission';
@@ -9,7 +9,7 @@
   export default defineComponent({
     emit: ['collapse'],
     setup() {
-      const { t } = useI18n();
+      // const { t } = useI18n();
       const appStore = useAppStore();
       const permission = usePermission();
       const router = useRouter();
@@ -108,13 +108,13 @@
                   key={element?.name}
                   v-slots={{
                     icon: () => h(compile(icon)),
-                    title: () => h(compile(t(element?.meta?.locale || ''))),
+                    title: () => h(compile(element?.meta?.title || '')),
                   }}
                 >
                   {element?.children?.map((elem) => {
                     return (
                       <a-menu-item key={elem.name} onClick={() => goto(elem)}>
-                        {t(elem?.meta?.locale || '')}
+                        {elem?.meta?.title || ''}
                         {travel(elem.children ?? [])}
                       </a-menu-item>
                     );
