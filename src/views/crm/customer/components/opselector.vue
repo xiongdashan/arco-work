@@ -42,22 +42,8 @@
       const visible = ref(false);
       const selectedOp = ref([]);
       const allOp = ref(allOpData);
-      const show = (record?: any) => {
-        submitData.value.cid = record.PID;
-        visible.value = !visible.value;
-        if (visible.value) {
-          loadData();
-        }
-        if (record.ops) {
-          record.ops.forEach((item: any) => {
-            value.value.push({
-              value: item.user_id,
-              label: item.username,
-            });
-          });
-        }
-      };
-      const loadData = () => {
+
+      const loadOpData = () => {
         if (sourceData.length > 0) {
           return;
         }
@@ -72,7 +58,23 @@
         });
       };
 
-      const FilterOpObj =  () => {
+      const show = (record?: any) => {
+        submitData.value.cid = record.PID;
+        visible.value = !visible.value;
+        if (visible.value) {
+          loadOpData();
+        }
+        if (record.ops) {
+          record.ops.forEach((item: any) => {
+            value.value.push({
+              value: item.user_id,
+              label: item.username,
+            });
+          });
+        }
+      };
+
+      const FilterOpObj = () => {
         const rev: OpType[] = [];
         allOp.value.filter((a) => selectedOp.value.some((v) => v === a.userId));
         return rev;
@@ -88,7 +90,6 @@
           Message.success('分配成功');
         });
       };
-
 
       return {
         value,

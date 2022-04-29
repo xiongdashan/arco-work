@@ -1,17 +1,12 @@
 /* eslint-disable prettier/prettier */
-import {post} from '../api/pangu_http'
+import { post } from '../api/pangu_http';
 
-const customerMgr = (data: any) => post('/core/api/crm/org/mgr', data)
+const customerMgr = (data: any) => post('/core/api/crm/org/mgr/1', data);
 
-const customerList = ( data: any) => post('/core/api/crm/org/list', data)
+const customerList = (data: any) => post('/core/api/crm/org/list/1', data);
 
-const customerDel = (data: any) => post('/core/api/crm/org/del', data)
+const customerDel = (data: any) => post('/core/api/crm/org/del', data);
 
-const asignOp = (data: any) => post('/core/api/crm/customer/asignOp', data)
+const asignOp = (data: any) => post('/core/api/crm/customer/asignOp', data);
 
-export {
-    customerMgr,
-    customerList,
-    customerDel,
-    asignOp
-}   
+export { customerMgr, customerList, customerDel, asignOp };

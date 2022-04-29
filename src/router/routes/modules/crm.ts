@@ -12,7 +12,7 @@ export default {
     {
       path: 'customer/list',
       name: 'crm.customer.title',
-      component: () => import('@/views/dashboard/workplace/index.vue'),
+      component: () => import('@/views/crm/customer/list.vue'),
       meta: {
         title: '客户管理',
         requiresAuth: true,

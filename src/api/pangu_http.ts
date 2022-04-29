@@ -1,103 +1,47 @@
 /* eslint-disable prettier/prettier */
-import { getTid, getToken } from '@/utils/auth'
-import { AxiosRequestHeaders, AxiosResponse } from 'axios'
-import request from './pangu_axios.config'
-
-export interface HttpOption {
-  url: string
-  data?: any
-  method?: string
-  headers?: any
-  beforeRequest?: () => void
-  afterRequest?: () => void
-}
+import { getTid } from '@/utils/auth';
+import loadingState from '@/utils/filters/loader';
+import axios from 'axios';
 
 export interface Response {
-  totalSize: number | 0
-  code: number
-  msg: string
-  data: any
-}
-
-function http({
-  url,
-  data,
-  method,
-  headers,
-  beforeRequest,
-  afterRequest,
-}: HttpOption) {
-  const successHandler = (res: AxiosResponse<Response>) => {
-    if (res.data.code === 200) {
-      return res.data
-    }
-    throw new Error(res.data.msg || '请求失败，未知异常')
-  }
-  const failHandler = (error: Response) => {
-    if(afterRequest) afterRequest()
-    throw new Error(error.msg || '请求失败，未知异常')
-  }
-  if(beforeRequest) beforeRequest()
-  method = method || 'GET'
-  const params = Object.assign(
-    typeof data === 'function' ? data() : data || {},
-    {}
-  )
-  return method === 'GET'
-    ? request.get(url, { params }).then(successHandler, failHandler)
-    : request
-        .post(url, params, { headers })
-        .then(successHandler, failHandler)
-}
-
-export function get({
-  url,
-  data,
-  method = 'GET',
-  beforeRequest,
-  afterRequest,
-}: HttpOption): Promise<Response> {
-  return http({
-    url,
-    method,
-    data,
-    beforeRequest,
-    afterRequest,
-  })
+  totalSize: number | 0;
+  code: number;
+  msg: string;
+  data: any;
 }
 
 export function post(
   url: string,
   data: any,
-  combinTid = false): Promise<Response> {
-  const headers: AxiosRequestHeaders =  {}
-  const tid = getTid()
-  if (tid) {
-    headers.tid=tid
+  combinTid = false
+): Promise<Response> {
+  const loader = loadingState();
+  loader.start();
+  const tid = getTid();
+  if (combinTid) {
+    url = tid + url;
   }
-  if(combinTid){
-    url = tid + url
-  }
-  const token = getToken()
-  if(token){
-    headers.Authorization = `Bearer ${token}`;
-  }
-  return http({
-    url,
-    method:'POST',
-    data,
-    headers,
-  })
+  return new Promise<Response>((resolve, reject) => {
+    axios
+      .post(url, data)
+      .then((res) => {
+        loader.end();
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      })
+      .finally(() => {
+        loader.end();
+      });
+  });
 }
 
 export function postTid(url: string, data: any): Promise<Response> {
-   return post(url, data, true) 
+  return post(url, data, true);
 }
-
-
 
 export default {
   post,
-  get,
-  postTid
-}
+  postTid,
+};

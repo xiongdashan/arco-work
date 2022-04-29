@@ -24,7 +24,7 @@
           </a-col>
         </a-row>
       </a-card>
-      <a-table :data="data.data" :pagination="false">
+      <a-table :data="crmdata.data" :pagination="false">
         <template #columns>
           <a-table-column title="名称" data-index="name"></a-table-column>
           <a-table-column title="创建人">
@@ -36,7 +36,7 @@
           </a-table-column>
           <a-table-column title="创建时间">
             <template #cell="{ record }">
-              {{ $filter.DateFormate(record.creation_time, 'yyyy-MM-DD') }}
+              {{ $filter(record.creation_time, 'yyyy-MM-DD') }}
             </template>
           </a-table-column>
           <a-table-column title="">
@@ -60,7 +60,7 @@
           <a-pagination
             :current="queryParam.pageIndex"
             :page-size="queryParam.pageSize"
-            :total="data.count"
+            :total="crmdata.count"
             show-total
             show-page-size
             @change="pageChange"
@@ -70,108 +70,48 @@
         </div>
       </a-card>
     </a-space>
-    <MgrPop ref="mgrpop" :type="1" @submited="pageChange(1)"></MgrPop>
-    <OpSelect ref="opSlt" @opChanged="pageChange(1)"></OpSelect>
+    <MgrModal ref="mgrCpt"></MgrModal>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+  import { customerList } from '@/services/crm';
+  import { DefineComponent, ref } from 'vue';
+  import MgrModal from './components/MgrModal.vue';
 
-  import { defineComponent, onMounted, ref } from 'vue';
-  import { customerDel, customerList } from '@/services/crm';
-  import { Message, Modal } from '@arco-design/web-vue';
-  import OpSelect from './components/opselector.vue';
-  import MgrPop from './components/mgrpop.vue';
+  const mgrCpt = ref<InstanceType<typeof MgrModal>>();
 
-  export default defineComponent({
-    name: 'CustomerList',
-    components: {
-      MgrPop,
-      OpSelect,
-    },
+  const toggle = () => {
+    mgrCpt.value?.Display();
+  };
 
-    setup() {
-      const showPop = ref(false);
-      const selectedRow = ref({});
-      const mgrpop = ref();
-      const opSlt = ref();
-      const data = ref({
-        count: 0,
-        data: [],
-      });
-      const queryParam = ref({
-        pageIndex: 1,
-        pageSize: 10,
-      });
+  const pageChange = (num: number) => {};
 
-      const toggle = (editData?: any) => {
-        (mgrpop.value as any).show(editData);
-      };
-
-      const loadData =  () => {
-        customerList({
-          pageIndex: queryParam.value.pageIndex,
-          pageSize: queryParam.value.pageSize,
-        }).then((ret) => {
-          data.value = ret.data;
-        });
-      };
-
-      const pageChange =  (pageIndex: number) => {
-        queryParam.value.pageIndex = pageIndex;
-        loadData();
-      };
-
-      const pageSizeChange =  (pageSize: number) => {
-        queryParam.value.pageIndex = 1;
-        queryParam.value.pageSize = pageSize;
-        loadData();
-      };
-
-      const edit =  (record: any) => {
-        selectedRow.value = record;
-        toggle(record);
-      };
-
-      const del =  (record: any) => {
-        Modal.info({
-          title: '警告',
-          content: '确定要删除吗？',
-          hideCancel: false,
-          onOk: () => {
-            customerDel({ id: record.PID }).then((ret) => {
-              if (ret.code === 0) {
-                Message.success('删除成功');
-                pageChange(1);
-              }
-            });
-          },
-        });
-      };
-
-      const showOpSlt = (record: any) => {
-        (opSlt.value as any).show(record);
-      };
-
-      onMounted(() => {
-        loadData();
-      });
-      return {
-        showPop,
-        selectedRow,
-        data,
-        queryParam,
-        pageChange,
-        pageSizeChange,
-        edit,
-        del,
-        toggle,
-        mgrpop,
-        showOpSlt,
-        opSlt,
-      };
-    },
+  const crmdata = ref({
+    data: [],
+    count: 0,
   });
+
+  const del = (record: any) => {};
+
+  const edit = (record: any) => {};
+
+  const showOpSlt = (record: any) => {};
+
+  const pageSizeChange = (num: number) => {};
+
+  const queryParam = {
+    pageIndex: 1,
+    pageSize: 10,
+  };
+
+  const loadData = () => {
+    customerList(queryParam).then((ret) => {
+      crmdata.value = ret.data;
+    });
+  };
+
+  loadData();
 </script>
 
 <style lang="less" scoped>
