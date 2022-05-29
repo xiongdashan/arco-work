@@ -6,9 +6,7 @@ function checkPermission(el: HTMLElement, binding: DirectiveBinding) {
   const userStore = useUserStore();
   const { permission } = userStore;
 
-  const permissionValues = value;
-
-  const hasPermission = permission?.some((p) => p === permissionValues);
+  const hasPermission = permission?.some((p) => p === value);
 
   if (!hasPermission && el.parentNode) {
     el.parentNode.removeChild(el);

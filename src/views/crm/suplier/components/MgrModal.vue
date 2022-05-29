@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import { customerMgr } from '@/services/crm';
+  import { SuplierMgr } from '@/services/suplier';
   import { Message } from '@arco-design/web-vue';
   import { reactive, ref } from 'vue';
 
@@ -60,7 +60,7 @@
     if (errors) {
       return;
     }
-    customerMgr(values).then((ret) => {
+    SuplierMgr(values).then((ret) => {
       Message.success('操作成功');
       emit('mgrSubmited');
       open.value = false;

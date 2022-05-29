@@ -24,7 +24,7 @@ export default function setupPermissionGuard(router: Router) {
       }
       NProgress.done();
     }
-    if (isLogin()) {
+    if (isLogin() && to.name !== 'logout') {
       if (userStore.role) {
         crossroads();
       } else {
@@ -43,7 +43,7 @@ export default function setupPermissionGuard(router: Router) {
         }
       }
     } else {
-      if (to.name === 'login') {
+      if (to.name === 'login' || to.name === 'logout') {
         next();
         NProgress.done();
         return;

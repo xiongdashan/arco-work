@@ -1,32 +1,32 @@
-/* eslint-disable prettier/prettier */
 import { getTid } from '@/utils/auth';
 import loadingState from '@/utils/filters/loader';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { useRouter } from 'vue-router';
 
 export interface Response {
-  totalSize: number | 0;
   code: number;
   msg: string;
   data: any;
 }
 
-export function post(
-  url: string,
-  data: any,
-  combinTid = false
-): Promise<Response> {
+export async function post<T>(url: string, data: any, combinTid = false) {
   const loader = loadingState();
   loader.start();
   const tid = getTid();
   if (combinTid) {
+    if (!tid) {
+      const router = useRouter();
+      window.location.href = '/logout';
+      throw new Error('tid is empty');
+    }
     url = tid + url;
   }
-  return new Promise<Response>((resolve, reject) => {
+  return new Promise<T>((resolve, reject) => {
     axios
       .post(url, data)
       .then((res) => {
         loader.end();
-        resolve(res.data);
+        resolve(res.data as T);
       })
       .catch((err) => {
         reject(err);
@@ -37,8 +37,8 @@ export function post(
   });
 }
 
-export function postTid(url: string, data: any): Promise<Response> {
-  return post(url, data, true);
+export function postTid<T>(url: string, data: any) {
+  return post<T>(url, data, true);
 }
 
 export default {

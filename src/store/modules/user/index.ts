@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 import {
-  login as userLogin,
-  logout as userLogout,
+  login as userlogin,
+  logout as userlogout,
   getUserInfo,
   LoginData,
+  logout,
 } from '@/services/user';
-import { setToken, clearToken, setTid, setAuthor } from '@/utils/auth';
+import { setToken, clearToken, setTid, setAuthor, getTid } from '@/utils/auth';
 import { removeRouteListener } from '@/utils/route-listener';
 import { UserState } from './types';
 
@@ -60,11 +61,20 @@ const useUserStore = defineStore('user', {
       this.setInfo(res);
     },
 
+    async mustTid() {
+      const tid = getTid();
+      if (tid === null) {
+        await logout();
+        window.location.reload();
+        return null;
+      }
+      return tid;
+    },
+
     // Login
     async login(tid: string, loginForm: LoginData) {
       try {
-        const res = await userLogin(tid, loginForm);
-        const { data } = res;
+        const data = (await userlogin(tid, loginForm)) as any;
         setToken(data.token);
         setTid(data.tid);
         setAuthor(data.permission);
@@ -76,8 +86,6 @@ const useUserStore = defineStore('user', {
 
     // Logout
     async logout() {
-      await userLogout();
-
       this.resetInfo();
       clearToken();
       removeRouteListener();

@@ -4,7 +4,7 @@ import DateFormate from './momentdate';
 
 const plugin: Plugin = {
   install(app: App) {
-    app.config.globalProperties.$filter = DateFormate;
+    app.config.globalProperties.$dateFormator = DateFormate;
     app.config.globalProperties.$loader = loadingState();
   },
 };

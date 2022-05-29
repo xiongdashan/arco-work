@@ -1,11 +1,7 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
-import {
-  UserState
-} from '@/store/modules/user/types';
-import {
-  post, postTid
-} from '@/api/pangu_http';
+import { UserState } from '@/store/modules/user/types';
+import { post, postTid } from '@/api/pangu_http';
 
 export interface LoginData {
   username: string;
@@ -17,21 +13,17 @@ export interface LoginRes {
 }
 export function login(tid: string, loginData: LoginData) {
   const url = `${tid}/api/plat/login`;
-  return post(url, loginData)
+  return post(url, loginData);
 }
 
 export function logout() {
-  return axios.post < LoginRes > ('/api/user/logout');
+  return axios.post<LoginRes>('/api/user/logout');
 }
 
 export function getUserInfo() {
-  return new Promise < UserState > ((resolve, reject) => {
-    postTid('/api/plat/frontend_userinfo', {}).then(res => {
-      resolve(res.data as UserState);
-    }).catch(err => {
-      reject(err);
-    });
-  })
+  return postTid<UserState>('/api/plat/frontend_userinfo', {});
 }
 
-export const OpUsers = () => postTid(`/api/plt/user_Ops`, {})
+export function OpUsers<T>(): Promise<T> {
+  return postTid<T>(`/api/plat/user_Ops`, {});
+}

@@ -5,7 +5,7 @@
         <a-row>
           <a-col :span="12">
             <a-button
-              v-permission="'crm:list:mgr'"
+              v-permission="'suplier:list:mgr'"
               type="primary"
               @click="toggle()"
             >
@@ -46,7 +46,7 @@
               <a-space size="middle">
                 <a-popconfirm content="确认要删除吗?" @ok="del(record)">
                   <a-button
-                    v-permission="'crm:mgr:del'"
+                    v-permission="'suplier:mgr:del'"
                     type="primary"
                     shape="circle"
                     size="mini"
@@ -57,6 +57,7 @@
                   </a-button>
                 </a-popconfirm>
                 <a-button
+                  v-permission="'suplier:mgr:edit'"
                   type="primary"
                   shape="circle"
                   size="mini"
@@ -64,17 +65,6 @@
                   @click="edit(record)"
                 >
                   <icon-settings />
-                </a-button>
-
-                <a-button
-                  v-permission="'crm:list:asginop'"
-                  type="primary"
-                  shape="circle"
-                  size="mini"
-                  title="分配OP"
-                  @click="showOpSlt(record)"
-                >
-                  <icon-user-add />
                 </a-button>
               </a-space>
             </template>
@@ -97,18 +87,15 @@
       </a-card>
     </a-space>
     <MgrModal ref="mgrCpt" @mgr-submited="loadData"></MgrModal>
-    <OpSelector ref="opsltCpt" @op-seted="loadData"></OpSelector>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { customerList, OrgDel } from '@/services/crm';
+  import { SuplierList, SuplierDel } from '@/services/suplier';
   import { reactive, ref } from 'vue';
   import MgrModal from './components/MgrModal.vue';
-  import OpSelector from './components/OpSelector.vue';
 
   const mgrCpt = ref<InstanceType<typeof MgrModal>>();
-  const opsltCpt = ref<InstanceType<typeof OpSelector>>();
 
   const queryParam = reactive({
     pageIndex: 1,
@@ -121,7 +108,7 @@
   });
 
   const loadData = () => {
-    customerList(queryParam).then((ret) => {
+    SuplierList(queryParam).then((ret) => {
       crmdata.value = ret as any;
     });
   };
@@ -142,16 +129,12 @@
   };
 
   const del = async (record: any) => {
-    await OrgDel({ id: record.cid });
+    await SuplierDel({ id: record.cid });
     loadData();
   };
 
   const edit = (record: any) => {
     mgrCpt.value?.Display(record);
-  };
-
-  const showOpSlt = (record: any) => {
-    opsltCpt.value?.Display(record);
   };
 
   loadData();
