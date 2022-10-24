@@ -49,4 +49,6 @@ export interface PnrOrder {
   journey: Journey[];
   pax: Pax[];
   price: AirlinePrice[];
+  officeNumber: string;
+  txtCode: string;
 }

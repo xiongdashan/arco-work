@@ -3,7 +3,7 @@ import { OpRefCustomersVo } from '@/services/crmmodule';
 import { SelectItem } from '@/services/sharedmodles';
 
 export default class OpSelectCus {
-  private sltedVal: string | null;
+  private sltedVal: any;
 
   private defaultVal: string | null;
 
@@ -11,7 +11,7 @@ export default class OpSelectCus {
 
   public SltedSup: SelectItem | null = {} as SelectItem;
 
-  constructor(sltedVal: string | null, defaultVal: string | null) {
+  constructor(sltedVal: any, defaultVal: string | null) {
     this.sltedVal = sltedVal;
     this.defaultVal = defaultVal;
   }
@@ -24,13 +24,13 @@ export default class OpSelectCus {
         value: c.value,
         label: `${c.name}/${c.owner.user_name}`,
         extra: {
-          ownerId: c.owner.ownerId,
+          ownerId: c.ownerId,
         },
       });
     });
   }
 
-  setSltSupVal(val: string | null) {
+  setSltSupVal(val: any) {
     if (!val || val.length === 0) {
       this.SltedSup = null;
     }

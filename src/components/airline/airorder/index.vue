@@ -27,19 +27,27 @@
       </a-form-item>
     </a-col>
   </a-row>
-
-  <a-form-item label="类型" label-col-flex="50px">
-    <a-space>
-      <a-radio-group v-model="airOrder.segmentType">
-        <a-radio value="国内">国内</a-radio>
-        <a-radio value="国际">国际</a-radio>
-      </a-radio-group>
-      <a-radio-group v-model="airOrder.category">
-        <a-radio value="团队">团队</a-radio>
-        <a-radio value="散客">散客</a-radio>
-      </a-radio-group>
-    </a-space>
-  </a-form-item>
+  <a-row :gutter="16">
+    <a-col :span="8">
+      <a-form-item label="Office">
+        <a-input v-model="airOrder.officeNumber"></a-input>
+      </a-form-item>
+    </a-col>
+    <a-col :span="16">
+      <a-form-item label="类型" label-col-flex="50px">
+        <a-space>
+          <a-radio-group v-model="airOrder.segmentType">
+            <a-radio value="国内">国内</a-radio>
+            <a-radio value="国际">国际</a-radio>
+          </a-radio-group>
+          <a-radio-group v-model="airOrder.category">
+            <a-radio value="团队">团队</a-radio>
+            <a-radio value="散客">散客</a-radio>
+          </a-radio-group>
+        </a-space>
+      </a-form-item>
+    </a-col>
+  </a-row>
 
   <a-form-item label-col-flex="0px" :content-flex="false">
     <Journey ref="journeyData" />
@@ -85,6 +93,8 @@
   listenerPnrAnalyzer((val: any) => {
     if (!val) return;
     airOrder.pnrCode = val.code;
+    airOrder.officeNumber = val.officeNumber;
+    airOrder.txtCode = val.txtCode;
   });
 
   defineExpose({

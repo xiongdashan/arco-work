@@ -6,6 +6,7 @@ export interface OpRefCustomersVo {
     department_name: string;
     ownerId: string;
   };
+  ownerId: string;
   userName: string;
 }
 

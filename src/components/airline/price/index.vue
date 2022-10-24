@@ -7,11 +7,11 @@
       :bordered="{ wrapper: true, cell: true }"
     >
       <template #columns>
-        <a-table-column title="#" width="65">
+        <a-table-column title="#" :width="65">
           <template #cell> 应付 </template>
         </a-table-column>
 
-        <a-table-column title="类型" width="70">
+        <a-table-column title="类型" :width="70">
           <template #cell="{ rowIndex }">
             {{ payabler[rowIndex].ptc }}
           </template>
@@ -71,12 +71,12 @@
           </template>
         </a-table-column>
 
-        <a-table-column title="人数" width="70">
+        <a-table-column title="人数" :width="70">
           <template #cell="{ rowIndex }">
             {{ payabler[rowIndex].paxCount }}
           </template>
         </a-table-column>
-        <a-table-column title="小计" width="150">
+        <a-table-column title="小计" :width="150">
           <template #cell="{ rowIndex }">
             {{ payabler[rowIndex].totalAmount.toFixed(2) }}
           </template>
@@ -90,11 +90,11 @@
       :bordered="{ wrapper: true, cell: true }"
     >
       <template #columns>
-        <a-table-column title="#" width="65">
+        <a-table-column title="#" :width="65">
           <template #cell> 应收 </template>
         </a-table-column>
 
-        <a-table-column title="类型" width="70">
+        <a-table-column title="类型" :width="70">
           <template #cell="{ rowIndex }">
             {{ receiver[rowIndex].ptc }}
           </template>
@@ -131,12 +131,12 @@
             />
           </template>
         </a-table-column>
-        <a-table-column title="人数" width="70">
+        <a-table-column title="人数" :width="70">
           <template #cell="{ rowIndex }">
             {{ receiver[rowIndex].paxCount }}
           </template>
         </a-table-column>
-        <a-table-column title="小计" width="150">
+        <a-table-column title="小计" :width="150">
           <template #cell="{ rowIndex }">
             {{ receiver[rowIndex].totalAmount.toFixed(2) }}
           </template>
@@ -145,18 +145,12 @@
       <template #footer>
         <div style="font-weight: bold; text-align: right">
           <a-space>
-            <a-typography-text>总计:</a-typography-text>
-            <a-typography-text
-              >(应收）{{ pc.ReceiveablePrice.toFixed(2) }}</a-typography-text
-            >
-            <a-typography-text>-</a-typography-text>
-            <a-typography-text
-              >(应付）{{ pc.PayablePrice.toFixed(2) }}</a-typography-text
-            >
-            <a-typograpthy-text>=</a-typograpthy-text>
-            <a-typography-text
-              >(利润){{ pc.Profit.toFixed(2) }}</a-typography-text
-            >
+            <span>总计:</span>
+            <span> >(应收）{{ pc.ReceiveablePrice.toFixed(2) }}</span>
+            <span>-</span>
+            <span>(应付）{{ pc.PayablePrice.toFixed(2) }}</span>
+            <a-typography-text>=</a-typography-text>
+            <span>(利润){{ pc.Profit.toFixed(2) }}</span>
           </a-space>
         </div>
       </template>

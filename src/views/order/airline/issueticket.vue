@@ -5,12 +5,12 @@
         <a-row :gutter="16">
           <a-col :span="8">
             <a-form-item label="客户">
-              <OPCustomerSelector ref="opCustomer" value="" user-name="" />
+              <OPCustomerSelector ref="opCustomer" value="" />
             </a-form-item>
           </a-col>
           <a-col :span="8">
             <a-form-item label="供应商" field="su">
-              <SuplierSelector ref="suplierVal" value="55827665017372673" />
+              <SuplierSelector ref="suplierVal" value="" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -53,6 +53,7 @@
   import { reactive, ref } from 'vue';
   import AirOrder from '@/components/airline/airorder/index.vue';
   import { createAirOrder } from '@/services/order';
+  import { Message } from '@arco-design/web-vue';
 
   const suplierVal = ref<InstanceType<typeof SuplierSelector>>();
   const opCustomer = ref<InstanceType<typeof OPCustomerSelector>>();
@@ -66,6 +67,18 @@
     orderform.basic.sup = suplierVal.value?.selectedSup;
     orderform.basic.cus = opCustomer.value?.SltedSup;
     orderform.airOrder = airOrder.value?.GetOrder();
+    if (!orderform.basic.sup) {
+      Message.error('请选择供应商');
+      return;
+    }
+    if (!orderform.basic.cus) {
+      Message.error('请选择客户');
+      return;
+    }
+    if (!orderform.basic.title) {
+      Message.error('请输入标题');
+      return;
+    }
     const rev = await createAirOrder(orderform);
     console.log(rev);
   };

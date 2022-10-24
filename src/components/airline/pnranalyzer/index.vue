@@ -35,7 +35,8 @@
       Message.error('请输入PNR文本内容');
       return;
     }
-    pnrAnalyzer(form.text).then((res) => {
+    pnrAnalyzer(form.text).then((res: any) => {
+      res.txtCode = form.text;
       setPnrAnalyzerEmitter(res);
       visible.value = false;
     });

@@ -9,7 +9,6 @@
     :options="oc.CustomerItems"
     @search="handleSearch"
     @change="changed"
-    @click="handleClick"
   >
   </a-select>
 </template>
@@ -18,7 +17,7 @@
   import { ref, reactive, computed, toRef, onMounted } from 'vue';
   import OpSelectCus from '.';
 
-  const sltedVal = ref<string | null>(null);
+  const sltedVal = ref<string>();
 
   const props = defineProps<{
     value: string;
@@ -38,16 +37,9 @@
     oc.setSltSupVal(val);
   }
 
-  const changed = (val: string) => {
-    oc.setSltSupVal(val);
+  const changed = () => {
+    oc.setSltSupVal(sltedVal.value);
   };
-
-  function handleClick() {
-    //  if(oc.CustomerItems && oc.CustomerItems.length > 0) {
-    //    return;
-    //  }
-    //  oc.loadData();
-  }
 
   onMounted(() => {
     oc.init();

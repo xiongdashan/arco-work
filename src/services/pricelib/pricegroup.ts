@@ -79,4 +79,14 @@ export default class PriceGroup {
     this.SummaryItem.totalAmount = 0;
     this.SummaryItem.paxCount = 0;
   }
+
+  removeTotal() {
+    const itemIdx = this.PriceItems.findIndex(
+      (item) => item.ptc === this.TOTALFLAG
+    );
+    if (itemIdx === -1) {
+      return;
+    }
+    this.PriceItems.splice(itemIdx, 1);
+  }
 }

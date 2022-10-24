@@ -11,6 +11,8 @@ export const setPnrAnalyzerEmitter = (pnr: any) => {
   pnrOrdre.pax = pnr.person;
   pnrOrdre.price = pnr.price;
   pnrOrdre.code = pnr.code;
+  pnrOrdre.officeNumber = pnr.officeNumber;
+  pnrOrdre.txtCode = pnr.txtCode;
   emitter.emit(key, pnrOrdre);
 };
 

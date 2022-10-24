@@ -7,7 +7,6 @@
     :allow-search="true"
     :allow-clear="true"
     :options="supliers"
-    :field-names="{ label: 'extra' }"
     @search="handleSearch"
     @change="changed"
   >
@@ -24,7 +23,7 @@
     value: string;
   }>();
   const supliers = reactive<SelectItem[]>([]);
-  const sltedVal = ref<string | null>(null);
+  const sltedVal = ref<string>();
   const selectedSup = ref<SuplierVo | null>();
 
   const initVal = computed<string | null>(() => {
@@ -49,8 +48,8 @@
     };
   };
 
-  const changed = (cid: string) => {
-    setSelectedSup(cid);
+  const changed = () => {
+    setSelectedSup(sltedVal.value || '');
   };
 
   const loadData = async (val?: string) => {
@@ -67,7 +66,7 @@
         extra: c.name + c.id,
       });
     });
-    sltedVal.value = initVal.value;
+    sltedVal.value = initVal.value || '';
     setSelectedSup(initVal.value);
   };
   const handleSearch = (val: string) => {

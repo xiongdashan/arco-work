@@ -17,7 +17,7 @@
           <a-input
             v-model="journeyData[rowIndex].flightNumber"
             :style="{ width: '80px' }"
-            size="middle"
+            size="medium"
           />
         </template>
       </a-table-column>
@@ -26,7 +26,7 @@
           <a-input
             v-model="journeyData[rowIndex].cabinClass"
             :style="{ width: '80px' }"
-            size="middle"
+            size="medium"
           />
         </template>
       </a-table-column>
@@ -37,13 +37,13 @@
               v-if="isNotArnk(rowIndex)"
               v-model="journeyData[rowIndex].dep.iataLocationCode"
               :style="{ width: '80px' }"
-              size="middle"
+              size="medium"
             />
             <a-input
               v-if="isNotArnk(rowIndex)"
               v-model="journeyData[rowIndex].arrival.iataLocationCode"
               :style="{ width: '80px' }"
-              size="middle"
+              size="medium"
             />
           </a-input-group>
         </template>
@@ -56,7 +56,7 @@
             v-model="journeyData[rowIndex].dep.aircraftScheduledDateTime"
             v-displaydate
             :style="{ width: '150px' }"
-            size="middle"
+            size="medium"
           />
         </template>
       </a-table-column>
@@ -68,7 +68,7 @@
             v-model="journeyData[rowIndex].arrival.aircraftScheduledDateTime"
             v-displaydate
             :style="{ width: '150px' }"
-            size="middle"
+            size="medium"
           />
         </template>
       </a-table-column>
@@ -79,7 +79,7 @@
             v-if="isNotArnk(rowIndex)"
             v-model="journeyData[rowIndex].arrival.terminalName"
             :style="{ width: '80px' }"
-            size="middle"
+            size="medium"
           />
         </template>
       </a-table-column>
